@@ -19,7 +19,7 @@ resource "random_string" "random" {
 
 // Organize resources in a resource group
 resource "azurerm_resource_group" "rg" {
-  name     = var.resourceGroupName != "" ? var.resourceGroupName : "infoasst-${var.environmentName}"
+  name     = var.resourceGroupName != "" ? var.resourceGroupName : "infoasst-${var.environmentName}${var.environment}"
   location = var.location
   tags     = local.tags
 }
@@ -601,7 +601,7 @@ module "cosmosdb" {
 
 module "acr"{
   source                = "./core/container_registry"
-  name                  = "infoasstacr${random_string.random.result}" 
+  name                  = "infoasstacr-${var.environment}-${random_string.random.result}" 
   location              = var.location
   resourceGroupName     = azurerm_resource_group.rg.name
   is_secure_mode        = var.is_secure_mode
